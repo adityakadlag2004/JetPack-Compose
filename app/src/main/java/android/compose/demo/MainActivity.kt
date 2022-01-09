@@ -3,10 +3,18 @@ package android.compose.demo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.Button
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -17,28 +25,26 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val modifier =
-                Modifier
-                    .padding(10.dp)
-                    .background(Color.Green)
-                    .fillMaxWidth(1f)
-                    .fillMaxHeight(0.5f)
-            Column(modifier=modifier,
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
+
+            var sizeState by remember {
+                mutableStateOf(200.dp)
+            }
+            val size by animateDpAsState(targetValue = sizeState, tween(durationMillis = 1000, delayMillis = 100, easing = FastOutSlowInEasing))
+            Box(
+                modifier = Modifier
+                    .size(size = size)
+                    .background(Color.DarkGray),
+                contentAlignment = Alignment.Center
             ) {
-                Greeting(name = "Hello")
-                Greeting(name = "Aditya")
+                Button(onClick = { sizeState+=50.dp }) {
+                    Text(text = "Click")
+                }
             }
         }
     }
-
-    @Composable
-    fun Greeting(name: String) {
-        Text(text = name)
-    }
-
-
 }
+
+
+
 
 
