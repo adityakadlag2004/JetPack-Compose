@@ -28,6 +28,32 @@ class MainActivity : ComponentActivity() {
                 })
             }
 
+            LazyColumn(modifier = Modifier.fillMaxSize()) {
+                items(items.size) { i ->
+                    Row(modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            items=items.mapIndexed{ j,item->
+                                if (i==j){
+                                    item.copy(isSelected = !item.isSelected)
+                                }else item
+                            }
+                        }
+                        .padding(16.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically) {
+                        Text(text = "Item $i")
+                        if (items[i].isSelected) {
+                            Icon(
+                                imageVector = Icons.Default.Check,
+                                contentDescription = "Yeah Nigga",
+                                tint = Color.Green,
+                                modifier = Modifier.size(20.dp)
+                            )
+                        }
+                    }
+                }
+            }
 
         }
     }
@@ -35,44 +61,13 @@ class MainActivity : ComponentActivity() {
     @Preview
     @Composable
     fun ComposablePreview() {
-        val items by remember {
-            mutableStateOf((1..20).map {
-                ListItem(title = "Item $it", isSelected = false)
-            })
-        }
-        DemoList(items = items)
+
 
     }
 
     @Composable
-    fun DemoList(items: List<ListItem>) {
-        var items2 = items
-        LazyColumn(modifier = Modifier.fillMaxSize()) {
-            items(items2.size) { i ->
-                Row(modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable {
-                        items2 = items.mapIndexed { j, item ->
-                            if (i == j) {
-                                item.copy(isSelected = !item.isSelected)
-                            } else item
-                        }
-                    }
-                    .padding(16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically) {
-                    Text(text = "Item $i")
-                    if (items2[i].isSelected) {
-                        Icon(
-                            imageVector = Icons.Default.Check,
-                            contentDescription = "Yeah Nigga",
-                            tint = Color.Green,
-                            modifier = Modifier.size(20.dp)
-                        )
-                    }
-                }
-            }
-        }
+    fun DemoList() {
+
     }
 
 
